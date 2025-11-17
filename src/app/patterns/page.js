@@ -8,7 +8,7 @@ import PreviewCard from '@/components/PreviewCard';
 import CodeCard from '@/components/CodeCard';
 import { components } from '@/data/componentData';
 
-export default function Home() {
+export default function Patterns() {
   const [selected, setSelected] = useState('button');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -26,12 +26,12 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-6 flex gap-6">
 
-        <Sidebar
+        {sidebarOpen && <Sidebar
           selected={selected}
           onSelect={setSelected}
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-        />
+        />}
 
         <main className="space-y-6">
           <PreviewCard>{current.preview}</PreviewCard>
