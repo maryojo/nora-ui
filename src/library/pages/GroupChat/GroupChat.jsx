@@ -21,7 +21,7 @@ const GroupChatCode = () => {
   }
 
   useEffect(() => {
-    scrollToBottom()
+    // scrollToBottom()
   }, [selectedChat])
 
   const getInitials = (name) => {
@@ -63,7 +63,7 @@ const GroupChatCode = () => {
       onClick={() => onClick(chat, isGroup)}
     >
       <div className='relative'>
-        <Avatar className='bg-gray-800'>
+        <Avatar className='bg-gray-800 rounded-sm'>
           <AvatarImage src={chat.avatar} alt={chat.name} />
           <AvatarFallback className='bg-gray-800 text-white'>{getInitials(chat.name)}</AvatarFallback>
         </Avatar>
@@ -112,158 +112,161 @@ const GroupChatCode = () => {
   )
 
   return (
-    <div className='flex w-full bg-white h-screen overflow-hidden'>
-      <div className='flex-shrink-0 w-fit h-full flex flex-col'>
-        <NavigationMenu>
-          <NavigationMenuList>
-            {data.navItems.map((item) => (
-              <NavigationMenuItem key={item.title}>
-                <NavigationMenuLink
-                  onClick={() => setActiveNav(item.title)}
-                  isActive={activeNav === item.title}
-                  className='w-full'
-                >
-                  <item.icon className='w-10 h-10' />
-                  <span>{item.title}</span>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
-        <SidebarProvider className="w-fit flex-1 overflow-hidden">
-          <Sidebar className='border-r h-full w-fit'>
-            <SidebarContent className='h-full'>
-              {/* Chat Lists */}
-              <ScrollArea className='h-full'>
-                {activeNav === 'All Chats' && (
-                  <div className='p-2'>
-                    <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
-                      All Messages
-                    </h3>
-                    {getAllChatsSorted().map((chat) => (
-                      <ChatItem key={`${chat.isGroup ? 'group' : 'dm'}-${chat.id}`} chat={chat} isGroup={chat.isGroup} onClick={handleChatClick} />
-                    ))}
-                  </div>
-                )}
+    <div className='lexend flex flex-col w-full bg-white h-screen overflow-hidden'>
+      <NavigationMenu>
+        <NavigationMenuList>
+          {data.navItems.map((item) => (
+            <NavigationMenuItem key={item.title}>
+              <NavigationMenuLink
+                onClick={() => setActiveNav(item.title)}
+                isActive={activeNav === item.title}
+                className='w-full'
+              >
+                <item.icon className='w-10 h-10' />
+                <span>{item.title}</span>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+      <div className='flex'>
+        <div className='flex-shrink-0 w-fit h-full flex flex-col'>
 
-                {activeNav === 'Direct Messages' && (
-                  <div className='p-2'>
-                    <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
-                      Direct Messages
-                    </h3>
-                    {data.chatList.map((chat) => (
-                      <ChatItem key={chat.id} chat={chat} onClick={handleChatClick} />
-                    ))}
-                  </div>
-                )}
+          <SidebarProvider className="w-fit flex-1 overflow-hidden">
+            <Sidebar className='border-r h-full w-fit'>
+              <SidebarContent className='h-full'>
+                {/* Chat Lists */}
+                <ScrollArea className='h-full'>
+                  {activeNav === 'All Chats' && (
+                    <div className='p-2'>
+                      <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
+                        All Messages
+                      </h3>
+                      {getAllChatsSorted().map((chat) => (
+                        <ChatItem key={`${chat.isGroup ? 'group' : 'dm'}-${chat.id}`} chat={chat} isGroup={chat.isGroup} onClick={handleChatClick} />
+                      ))}
+                    </div>
+                  )}
 
-                {activeNav === 'Groups' && (
-                  <div className='p-2'>
-                    <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
-                      Groups
-                    </h3>
-                    {data.groupChats.map((chat) => (
-                      <ChatItem key={chat.id} chat={chat} isGroup={true} onClick={handleChatClick} />
-                    ))}
-                  </div>
-                )}
-
-                {activeNav === 'Starred' && (
-                  <div className='p-2'>
-                    <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
-                      Starred Chats
-                    </h3>
-                    {data.chatList
-                      .filter(chat => chat.isStarred)
-                      .map((chat) => (
+                  {activeNav === 'Direct Messages' && (
+                    <div className='p-2'>
+                      <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
+                        Direct Messages
+                      </h3>
+                      {data.chatList.map((chat) => (
                         <ChatItem key={chat.id} chat={chat} onClick={handleChatClick} />
                       ))}
-                    {data.groupChats
-                      .filter(chat => chat.isStarred)
-                      .map((chat) => (
+                    </div>
+                  )}
+
+                  {activeNav === 'Groups' && (
+                    <div className='p-2'>
+                      <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
+                        Groups
+                      </h3>
+                      {data.groupChats.map((chat) => (
                         <ChatItem key={chat.id} chat={chat} isGroup={true} onClick={handleChatClick} />
                       ))}
-                  </div>
-                )}
-
-                {activeNav === 'Settings' && (
-                  <div className='p-4'>
-                    <h3 className='text-sm font-semibold mb-4'>Settings</h3>
-                    <p className='text-xs text-gray-500'>Settings panel coming soon...</p>
-                  </div>
-                )}
-              </ScrollArea>
-            </SidebarContent>
-          </Sidebar>
-        </SidebarProvider>
-      </div>
-
-      {/* Main Chat Area */}
-      <div className='flex-1 flex flex-col bg-gray-50 h-full overflow-hidden'>
-        {selectedChat ? (
-          <div className='flex flex-col h-full'>
-            {/* Chat Header */}
-            <div className='flex-shrink-0 flex items-center justify-between p-4 bg-white border-b'>
-              <div className='flex items-center gap-3'>
-                <Avatar className='bg-gray-800'>
-                  <AvatarImage src={selectedChat.avatar} alt={selectedChat.name} />
-                  <AvatarFallback className='bg-gray-800 text-white'>{getInitials(selectedChat.name)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className='font-semibold'>{selectedChat.name}</p>
-                  {selectedChat.isGroup ? (
-                    <p className='text-xs text-gray-500'>{selectedChat.memberCount} members</p>
-                  ) : (
-                    <p className='text-xs text-green-500'>{selectedChat.isOnline ? 'Online' : 'Offline'}</p>
+                    </div>
                   )}
+
+                  {activeNav === 'Starred' && (
+                    <div className='p-2'>
+                      <h3 className='text-xs font-semibold text-gray-500 uppercase px-3 py-2'>
+                        Starred Chats
+                      </h3>
+                      {data.chatList
+                        .filter(chat => chat.isStarred)
+                        .map((chat) => (
+                          <ChatItem key={chat.id} chat={chat} onClick={handleChatClick} />
+                        ))}
+                      {data.groupChats
+                        .filter(chat => chat.isStarred)
+                        .map((chat) => (
+                          <ChatItem key={chat.id} chat={chat} isGroup={true} onClick={handleChatClick} />
+                        ))}
+                    </div>
+                  )}
+
+                  {activeNav === 'Settings' && (
+                    <div className='p-4'>
+                      <h3 className='text-sm font-semibold mb-4'>Settings</h3>
+                      <p className='text-xs text-gray-500'>Settings panel coming soon...</p>
+                    </div>
+                  )}
+                </ScrollArea>
+              </SidebarContent>
+            </Sidebar>
+          </SidebarProvider>
+        </div>
+
+        {/* Main Chat Area */}
+        <div className='flex-1 flex flex-col bg-gray-50 h-full overflow-hidden'>
+          {selectedChat ? (
+            <div className='flex flex-col h-full'>
+              {/* Chat Header */}
+              <div className='flex-shrink-0 flex items-center justify-between p-4 bg-white border-b'>
+                <div className='flex items-center gap-3'>
+                  <Avatar className='bg-gray-800'>
+                    <AvatarImage src={selectedChat.avatar} alt={selectedChat.name} />
+                    <AvatarFallback className='bg-gray-800 text-white'>{getInitials(selectedChat.name)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className='font-semibold'>{selectedChat.name}</p>
+                    {selectedChat.isGroup ? (
+                      <p className='text-xs text-gray-500'>{selectedChat.memberCount} members</p>
+                    ) : (
+                      <p className='text-xs text-green-500'>{selectedChat.isOnline ? 'Online' : 'Offline'}</p>
+                    )}
+                  </div>
+                </div>
+                <div className='flex items-center gap-2'>
+                  <Button variant='ghost' size='icon'><Phone className='w-5 h-5' /></Button>
+                  <Button variant='ghost' size='icon'><Video className='w-5 h-5' /></Button>
+                  <Button variant='ghost' size='icon'><MoreVertical className='w-5 h-5' /></Button>
                 </div>
               </div>
-              <div className='flex items-center gap-2'>
-                <Button variant='ghost' size='icon'><Phone className='w-5 h-5' /></Button>
-                <Button variant='ghost' size='icon'><Video className='w-5 h-5' /></Button>
-                <Button variant='ghost' size='icon'><MoreVertical className='w-5 h-5' /></Button>
+
+              {/* Messages Area */}
+              <div className='flex-1 min-h-0 overflow-hidden'>
+                <ScrollArea className='h-full p-4'>
+                  {selectedChat.messages && selectedChat.messages.length > 0 ? (
+                    <>
+                      {selectedChat.messages.map((message) => (
+                        <MessageBubble key={message.id} message={message} />
+                      ))}
+                      <div ref={messagesEndRef} />
+                    </>
+                  ) : (
+                    <div className='flex items-center justify-center h-full text-gray-400'>
+                      <p>No messages yet. Start the conversation!</p>
+                    </div>
+                  )}
+                </ScrollArea>
+              </div>
+
+              {/* Message Input */}
+              <div className='flex-shrink-0 p-4 bg-white border-t'>
+                <div className='flex gap-2'>
+                  <Input
+                    placeholder='Type a message...'
+                    className='flex-1'
+                  />
+                  <Button size='icon'>
+                    <Send className='w-4 h-4' />
+                  </Button>
+                </div>
               </div>
             </div>
-
-            {/* Messages Area */}
-            <div className='flex-1 min-h-0 overflow-hidden'>
-              <ScrollArea className='h-full p-4'>
-                {selectedChat.messages && selectedChat.messages.length > 0 ? (
-                  <>
-                    {selectedChat.messages.map((message) => (
-                      <MessageBubble key={message.id} message={message} />
-                    ))}
-                    <div ref={messagesEndRef} />
-                  </>
-                ) : (
-                  <div className='flex items-center justify-center h-full text-gray-400'>
-                    <p>No messages yet. Start the conversation!</p>
-                  </div>
-                )}
-              </ScrollArea>
-            </div>
-
-            {/* Message Input */}
-            <div className='p-4 bg-white border-t'>
-              <div className='flex gap-2'>
-                <Input
-                  placeholder='Type a message...'
-                  className='flex-1'
-                />
-                <Button size='icon'>
-                  <Send className='w-4 h-4' />
-                </Button>
+          ) : (
+            <div className='flex-1 flex items-center justify-center'>
+              <div className='text-center text-gray-400'>
+                <p className='text-lg font-medium'>Select a chat to start messaging</p>
+                <p className='text-sm mt-2'>Choose a conversation from the sidebar</p>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className='flex-1 flex items-center justify-center'>
-            <div className='text-center text-gray-400'>
-              <p className='text-lg font-medium'>Select a chat to start messaging</p>
-              <p className='text-sm mt-2'>Choose a conversation from the sidebar</p>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

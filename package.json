@@ -1,7 +1,7 @@
 {
   "name": "nora-ui",
   "version": "0.1.0",
-  "description": "300+ Beautiful Tailwind CSS Components – Copy & Paste Ready",
+  "description": "A library of modern interfaces with great UX built with Shadcn",
   "keywords": [
     "tailwind",
     "components",

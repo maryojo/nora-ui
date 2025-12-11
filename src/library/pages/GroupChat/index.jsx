@@ -5,7 +5,7 @@ import GroupChatCode from './GroupChat'
 
 export const GroupChat = {
   name: "Group Chat",
-  code: "npx install nora-ui/groupchat-01",
+  code: "npx nora-ui add group-chat",
   preview: (
     <GroupChatCode />
   )

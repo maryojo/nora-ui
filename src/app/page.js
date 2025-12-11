@@ -9,7 +9,7 @@ import CodeCard from '@/components/CodeCard';
 import { components } from '@/data/componentData';
 
 export default function Home() {
-  const [selected, setSelected] = useState('FitnessOverview');
+  const [selected, setSelected] = useState('VideoConference');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const current = components[selected];
@@ -40,10 +40,8 @@ export default function Home() {
 
           {/* add use case and tags to this */}
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-800">
-              <strong>Note:</strong> These components use Tailwind CSS utility classes. Make sure you have Tailwind CSS installed in your project.
-            </p>
+          <div className='m-10'>
+
           </div>
         </main>
       </div>
